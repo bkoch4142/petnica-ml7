@@ -2,14 +2,11 @@ from nltk.stem import SnowballStemmer
 from nltk.tokenize import word_tokenize, sent_tokenize
 from collections import Counter
 import math
-import string 
 import nltk
 import os
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
-tokenizer=word_tokenize
-stemmer=SnowballStemmer(language='english', ignore_stopwords=False)
 
 def preprocessor(txt):
     tokens=[stemmer.stem(token.lower()) for token in tokenizer(txt) if token.isalnum()]
@@ -43,8 +40,7 @@ def task1(tok_text, tfidf_scores):
     #print top 10
     print(', '.join([k for k,v in top_10]))
 
-
-def task2(text,tfidf_score):
+def task2(text,tfidf_scores):
     sentences=sent_tokenize(text)
     if len(sentences)<6:
         return text # da li treba spojit s razmakom ili samo text vratit 
@@ -54,7 +50,7 @@ def task2(text,tfidf_score):
     
     for sent in sentences:
         tok_sent=preprocessor(sent)
-        tfidfs=[tfidf_score[tok] for tok in tok_sent]
+        tfidfs=[tfidf_scores[tok] for tok in tok_sent]
         tfidfs_top_10=sorted(tfidfs,reverse=True)[:10]
         sent_score=sum(tfidfs_top_10)
 
@@ -70,21 +66,24 @@ def task2(text,tfidf_score):
             sentences_sorted.append(sent)
         
     print(' '.join(sentences_sorted))
-    
 
 
 # setup 
 corpus_pth='data\\corpus'
 input_pth='data\\corpus\\goose\\Chinese goose.txt'
 
-txt_file_pths=[]
+tokenizer=word_tokenize
+stemmer=SnowballStemmer(language='english', ignore_stopwords=False)
+
+corpus_string=''
 for root, dirs, files in os.walk(corpus_pth, topdown=False):
    for name in files:
-      txt_file_pths.append(os.path.join(root, name))
+      corpus_string+=str(
+              open(os.path.join(root, name),'r', encoding='UTF-8').read()
+        )
 
-texts=[open(pth,'r', encoding='UTF-8').read() for pth in txt_file_pths]
+tok_corpus=preprocessor(corpus_string)
 
-tok_corpus=[preprocessor(text) for text in texts]
 input_text=open(input_pth,'r', encoding='UTF-8').read()
 tok_text=preprocessor(input_text)
 tfidf_scores=tfidf(tok_text,tok_corpus)
@@ -93,4 +92,4 @@ tfidf_scores=tfidf(tok_text,tok_corpus)
 task1(tok_text, tfidf_scores)
 
 # task 2
-task2(input_text, tfidf_scores)   
+task2(input_text, tfidf_scores)  
