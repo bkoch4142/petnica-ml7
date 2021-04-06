@@ -2,7 +2,6 @@ import numpy as np
 import math
 
 def calculate_beggining(px,py,vx,vy):
-#     assert da predznaci odgovaraju
     px=abs(px)
     py=abs(py)
     vx=abs(vx)
@@ -11,8 +10,7 @@ def calculate_beggining(px,py,vx,vy):
     opt1=0
     opt2=0
     
-    # see how many times to subtract in order to obtain minimum distance from origin 
-    #for x
+    # For X
     print('part1')
     px_opt1=px//vx
     px_opt2=px//vx+1
@@ -27,7 +25,7 @@ def calculate_beggining(px,py,vx,vy):
         print(px_opt2)
         opt1=px_opt2
         
-    #for y
+    # For y
     print('part2')
     py_opt1=py//vy
     py_opt2=py//vy+1
@@ -42,7 +40,7 @@ def calculate_beggining(px,py,vx,vy):
         print(py_opt2)
         opt2=py_opt2
     
-    #this will generate 2 suggestions from which one has to be choosen by comparing 
+    # This will generate 2 suggestions from which one has to be choosen by comparing 
     opt1_rezx=px-opt1*vx
     opt2_rezx=px-opt2*vx
     opt1_rezy=py-opt1*vy
@@ -75,12 +73,12 @@ def simulate_second(px,py,vx, vy, bound, debug=False):
         hit_cnt+=1
     elif px_nb<-bound:
 
-        px_b= -bound + (abs(px_nb) - abs(bound)) # ovo stavljeno u +
+        px_b= -bound + (abs(px_nb) - abs(bound)) 
         
         if debug:
             print(f'px < {-bound}')
             print(px_nb)
-            print(px_nb+10) # +
+            print(px_nb+10) 
             print(px_b)
         vx_new=-vx
         hit_cnt+=1
@@ -100,8 +98,6 @@ def simulate_second(px,py,vx, vy, bound, debug=False):
         vy_new=-vy
         hit_cnt+=1
     elif py_nb<-bound:
-
-#         py_b= -bound + (py_nb -bound)
         py_b= -bound + (abs(py_nb) - abs(bound))
         
         if debug:
@@ -205,7 +201,7 @@ def task_b_and_c(particles, bound, time, ref_prob):
     return hit_result, sum(probas)
 
 
-# test public dataset
+# Test public dataset
 # for i in range(1,11,1):
 #     if i < 10:
 #         i_str='0'+str(i)
