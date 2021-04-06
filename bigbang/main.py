@@ -10,7 +10,6 @@ def calculate_beggining(px,py,vx,vy):
     opt1=0
     opt2=0
     
-    # For X
     print('part1')
     px_opt1=px//vx
     px_opt2=px//vx+1
@@ -25,7 +24,6 @@ def calculate_beggining(px,py,vx,vy):
         print(px_opt2)
         opt1=px_opt2
         
-    # For y
     print('part2')
     py_opt1=py//vy
     py_opt2=py//vy+1
@@ -40,7 +38,6 @@ def calculate_beggining(px,py,vx,vy):
         print(py_opt2)
         opt2=py_opt2
     
-    # This will generate 2 suggestions from which one has to be choosen by comparing 
     opt1_rezx=px-opt1*vx
     opt2_rezx=px-opt2*vx
     opt1_rezy=py-opt1*vy
@@ -149,7 +146,6 @@ def task_a(particles, particle_cnt):
     vx_sum=means[2]
     vy_sum=means[3]
     aprox=int(((x_sum/particle_cnt)/(vx_sum/particle_cnt) + (y_sum/particle_cnt)/(vy_sum/particle_cnt)))/2
-#     print('aprox',aprox)
     
 
     start_subs=aprox-3
@@ -157,62 +153,34 @@ def task_a(particles, particle_cnt):
     
     min_x_std=np.std(particles[:,0]-start_subs*particles[:,2])
     min_y_std=np.std(particles[:,1]-start_subs*particles[:,3])
-#     print('min ', min_x_std, min_y_std)
     
     for i in range(int(start_subs)+1, int(aprox)+5, 1):
-#         print(i)
         x_std=np.std(particles[:,0]-i*particles[:,2])
         y_std=np.std(particles[:,0]-i*particles[:,2])
 
-#         print('x_dif ',x_dif)
-#         print('y_dif ',y_dif)
-#         print('x_std', x_std)
-#         print('y_std', y_std)
-#         print()
         if (abs(x_std)+abs(y_std))<(abs(min_x_std)+abs(min_y_std)):
             min_x_std=x_std
             min_y_std=y_std
             before_n_secs=i
         else:
-#             print('breaking')
             break
             
     return before_n_secs
 
 def task_b_and_c(particles, bound, time, ref_prob):
-#     print('bound ',bound)
     hit_result=0
     probas=[]
     
     for idx,particle in enumerate(particles):
-#         print('particle ',idx)
         px,py,vx,vy= particle
-#         print(f"{px:.2f}\t {py:.2f}\t {vx:.2f}\t {vy:.2f}")
         this_particle_hit=0
         for i in range(int(time)):
             px,py,vx,vy,hit_cnt=simulate_second(px,py,vx,vy,bound)
-#             print(f"{px:.2f}\t {py:.2f}\t {vx:.2f}\t {vy:.2f}\t {hit_cnt:.2f}")
             this_particle_hit+=hit_cnt
             hit_result+=hit_cnt
-#         print(this_particle_hit)
         proba=pow(ref_prob,this_particle_hit)
-#         print(proba)
         probas.append(proba)
     return hit_result, sum(probas)
-
-
-# Test public dataset
-# for i in range(1,11,1):
-#     if i < 10:
-#         i_str='0'+str(i)
-#     else:
-#         i_str=str(i)
-        
-#     particle_cnt, bound, time_of_ref, ref_prob, particles=read_file(fpth=f'bigbang/data/{i_str}.in')
-#     print(open(f'bigbang/data/{i_str}.out').read().strip())
-#     A=task_a(particles, particle_cnt)
-#     B,C=task_b_and_c(particles, bound, time_of_ref, ref_prob)
-#     print(A,B,C)
 
 
 if __name__=="__main__":
